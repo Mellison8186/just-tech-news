@@ -34,7 +34,6 @@ router.get('/:id', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-    //expects {username: 'Lernantino', email: 'lernantino@gmail.com' password: 'password1234;}
     User.create({
         username: req.body.username,
         email: req.body.email,
@@ -44,6 +43,25 @@ router.post('/', (req, res) => {
     .catch(err => {
         console.log(err);
         res.status(500).json(err);
+    });
+});
+
+router.post('/login', (req, res) => {
+    User.findOne({
+        where: {
+            email: req.body.email
+        }
+    }).then(dbUserData => {
+        if (!dbUserData) {
+            res.status(400).json({ message: 'No user with that email address!' });
+            return;
+        }
+        const validPassword = dbUserData.checkPassword(req.body.password);
+        if (!validPassword) {
+            res.status(400).json({ message: 'Incorrec password!' });
+            return;
+        }
+        res.json({ user: dbUserData, message: 'You are now logged in!' });
     });
 });
 
