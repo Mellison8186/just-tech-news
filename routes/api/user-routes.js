@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { User } = require('../../models');
+const { User, Post } = require('../../models');
 
 router.get('/', (req, res) => {
     //Access our User model and run .findAll() method
@@ -34,6 +34,7 @@ router.get('/:id', (req, res) => {
 });
 
 router.post('/', (req, res) => {
+      // expects {username: 'Lernantino', email: 'lernantino@gmail.com', password: 'password1234'}
     User.create({
         username: req.body.username,
         email: req.body.email,
