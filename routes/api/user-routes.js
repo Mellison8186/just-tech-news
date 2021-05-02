@@ -1,7 +1,6 @@
 const router = require('express').Router();
 const { User } = require('../../models');
 
-// GET /api/users
 router.get('/', (req, res) => {
     //Access our User model and run .findAll() method
     User.findAll({
@@ -14,7 +13,6 @@ router.get('/', (req, res) => {
     });
 });
 
-// GET /api/users/1
 router.get('/:id', (req, res) => {
     User.findOne({
         attributes: { exclude: ['password'] },
@@ -35,7 +33,6 @@ router.get('/:id', (req, res) => {
     });
 });
 
-//POST /api/users
 router.post('/', (req, res) => {
     //expects {username: 'Lernantino', email: 'lernantino@gmail.com' password: 'password1234;}
     User.create({
@@ -50,10 +47,10 @@ router.post('/', (req, res) => {
     });
 });
 
-//PUT /api/users/1
 router.put('/:id', (req, res) => {
 //if req.body has exact key/value pairs to match the model, you can just use 'req.bod' instead
     User.update(req.body, {
+        individualHooks: true,
         where: {
             id: req.params.id
         }
